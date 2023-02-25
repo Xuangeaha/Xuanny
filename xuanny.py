@@ -2,7 +2,7 @@ import sys
 import time
 import getopt
 
-version: str = 'Beta 0.0.2'
+version: str = 'Beta 0.0.3'
 
 def Exception(location: any, name: str, discripton: str):
     print("---------------------------------------------------------------------------")
