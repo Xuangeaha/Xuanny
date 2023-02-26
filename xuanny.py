@@ -8,7 +8,7 @@ name = []
 value = []
 type = []
 
-STR, INT, BOOL = "str", "int", "bool"
+STR, INT, BOOL = "文字", "数字", "bool"
 
 def Exception(location: any, name: str, discripton: str):
     print("---------------------------------------------------------------------------")
@@ -23,7 +23,7 @@ def _define(_name, _value):
         _valueTran = int(_value)
         _type = INT
         try:
-            if sentence[3] == "str":
+            if sentence[3] == "文字":
                 _type = STR
         except IndexError:
             pass
@@ -31,11 +31,11 @@ def _define(_name, _value):
         _valueTran = str(_value)
         _type = STR
         try:
-            if sentence[3] == "int":
-                Exception(sentences,"类型错误",sentence[0] + "的类型应为 'str'，实际为 'int'")
+            if sentence[3] == "数字":
+                Exception(sentences,"类型错误",sentence[0] + "的类型应为 '文字'，实际为 '数字'")
         except IndexError:
             pass
-    for _key_define in range(0,len(name)-1):
+    for _key_define in range(0,len(name)):
         if name[_key_define] == _name:
             value[_key_define] = _valueTran
             type[_key_define] = _type
@@ -47,14 +47,27 @@ def _define(_name, _value):
     print(name,value,type)
     return
 
+def _print(_word):
+    if _word in name:
+        for _key_print in range(0,len(name)):
+            if name[_key_print] == _word:
+                print(value[_key_print])
+    else:
+        Exception(sentences,"变量错误","未定义的变量 " + sentence[1])
+
 def run(sentence: str):
-    if sentence[1] == "=":
-        _define(sentence[0],sentence[2])
+    try:
+        if sentence[1] == "=":
+            _define(sentence[0],sentence[2])
+        if sentence[0] == "输出":
+            _print(sentence[1])
+    except IndexError:
+        pass
 
 try:
     args = getopt.getopt(sys.argv[1:],'',['help','version'])
 except getopt.GetoptError:
-    Exception(sys.argv[0:], "参数错误", "未知的参数：" + str(sys.argv[1:]))
+    Exception(sys.argv[0:], "参数错误", "未知的参数 " + str(sys.argv[1:]))
 
 if len(args[0]) > 0:
     if "--help" in args[0][0]:
@@ -79,4 +92,4 @@ if len(args[1]) > 0:
                 print(sentence)
                 run(sentence)
     except FileNotFoundError:
-        Exception(sys.argv[0:], "文件读取错误", "找不到文件：" + str(sys.argv[1:]))
+        Exception(sys.argv[0:], "文件读取错误", "找不到文件 " + str(sys.argv[1:]))
