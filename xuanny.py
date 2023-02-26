@@ -2,7 +2,7 @@ import sys
 import time
 import getopt
 
-version: str = 'Beta 0.1.0'
+version: str = 'Beta 0.1.1'
 
 name = []
 value = []
@@ -20,6 +20,12 @@ def Exception(location: any, name: str, discripton: str):
 
 def _define(_name, _value):
     try:
+        _nameTran = int(_name)
+        Exception(sentences,"变量错误","不支持的变量名 " + sentence[0])
+    except ValueError:
+        pass
+
+    try:
         _valueTran = int(_value)
         _type = INT
         try:
@@ -35,6 +41,7 @@ def _define(_name, _value):
                 Exception(sentences,"类型错误",sentence[0] + "的类型应为 '文字'，实际为 '数字'")
         except IndexError:
             pass
+
     for _key_define in range(0,len(name)):
         if name[_key_define] == _name:
             value[_key_define] = _valueTran
