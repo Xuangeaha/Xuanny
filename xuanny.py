@@ -2,18 +2,54 @@ import sys
 import time
 import getopt
 
-version: str = 'Beta 0.0.3'
+version: str = 'Beta 0.1.0'
+
+name = []
+value = []
+type = []
+
+STR, INT, BOOL = "str", "int", "bool"
 
 def Exception(location: any, name: str, discripton: str):
     print("---------------------------------------------------------------------------")
     print("  出了点小问题（" + time.strftime("%H:%M:%S", time.localtime()) + "）：")
-    print("    在", location, "中")
+    print("    在", location, "中：")
     print("  " + name + "：" + discripton)
     print("---------------------------------------------------------------------------")
     sys.exit()
 
+def _define(_name, _value):
+    try:
+        _valueTran = int(_value)
+        _type = INT
+        try:
+            if sentence[3] == "str":
+                _type = STR
+        except IndexError:
+            pass
+    except ValueError:
+        _valueTran = str(_value)
+        _type = STR
+        try:
+            if sentence[3] == "int":
+                Exception(sentences,"类型错误",sentence[0] + "的类型应为 'str'，实际为 'int'")
+        except IndexError:
+            pass
+    for _key_define in range(0,len(name)-1):
+        if name[_key_define] == _name:
+            value[_key_define] = _valueTran
+            type[_key_define] = _type
+            print(name,value,type)
+            return
+    name.append(_name)
+    value.append(_value)
+    type.append(_type)
+    print(name,value,type)
+    return
+
 def run(sentence: str):
-    pass
+    if sentence[1] == "=":
+        _define(sentence[0],sentence[2])
 
 try:
     args = getopt.getopt(sys.argv[1:],'',['help','version'])
@@ -37,8 +73,10 @@ if len(args[0]) > 0:
 if len(args[1]) > 0:
     filename = args[1][0]
     try:
-        with open(filename, encoding='utf-8') as file_obj:
-            sentence = file_obj.read()
-            run(sentence)
+        with open(filename) as file_obj:
+            for sentences in file_obj:
+                sentence = sentences.replace("\n","").split(" ")
+                print(sentence)
+                run(sentence)
     except FileNotFoundError:
         Exception(sys.argv[0:], "文件读取错误", "找不到文件：" + str(sys.argv[1:]))
